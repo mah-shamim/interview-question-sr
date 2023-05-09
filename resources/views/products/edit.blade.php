@@ -56,19 +56,6 @@
                                 <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
                             </div>
                         </div>
-                        {{--@dd($product->productImages)--}}
-                        @if($product->productImages)
-                            {{--@foreach($product->productImages as $key=>$productImage)
-                                <input type="text" class="form-control" value="{{$productImage->file_path}}" name="imageUpload[{{$key}}]" required>
-                                <input type="text" class="form-control" value="{{public_path('images')}}" name="imagePath[{{$key}}]" required>
-                                @push('page_js')
-                                    <script>
-                                        myDropzone.addFile('{{public_path('images')}}/{{$productImage->file_path}}')
-                                    </script>
-                                @endpush
-                            @endforeach--}}
-
-                        @endif
                         <div class="media-section"></div>
                     </div>
                 </div>
@@ -181,21 +168,22 @@
     @php
         $thumbnails = [];
         foreach ($product->productImages as $productImage){
-            $thumbnails[] = [
-               'name' => $productImage->file_path,
-                'size' => filesize(public_path('images/'.$productImage->file_path)),
-                'type' => mime_content_type(public_path('images/'.$productImage->file_path)),
-                'status' => 'added',
-                'url' => asset('images/'.$productImage->file_path),
-                'accepted' => true
-            ];
+            if(file_exists(public_path('images/'.$productImage->file_path))){
+                $thumbnails[] = [
+                   'name' => $productImage->file_path,
+                    'size' => filesize(public_path('images/'.$productImage->file_path)),
+                    'type' => mime_content_type(public_path('images/'.$productImage->file_path)),
+                    'status' => 'added',
+                    'url' => asset('images/'.$productImage->file_path),
+                    'accepted' => true
+                ];
+            }
         }
     @endphp
     <script>
         fileUploadURL="{{ route('file-upload') }}";
         fileDeleteURL="{{ route('file-delete') }}";
         thumbnails = {!! json_encode($thumbnails) !!};
-        console.log(thumbnails)
     </script>
     <script type="text/javascript" src="{{ asset('js/product.js') }}"></script>
 @endpush

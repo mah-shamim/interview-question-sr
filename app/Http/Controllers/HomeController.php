@@ -39,7 +39,7 @@ class HomeController extends Controller
             'file' => 'required|image|mimes:png,jpg,jpeg,svg|max:2048'
         ]);
 
-        $imageName = time().'.'.$request->file->extension();
+        $imageName = \Str::random(40).'.'.$request->file->extension();
 
         // Public Folder
         $request->file->move(public_path('images'), $imageName);
@@ -49,6 +49,8 @@ class HomeController extends Controller
 
     public function deleteImage(Request $request)
     {
-        unlink(public_path('images')."/".$request->file_to_be_deleted);
+        if(file_exists(public_path('images')."/".$request->file_to_be_deleted)){
+            unlink(public_path('images')."/".$request->file_to_be_deleted);
+        }
     }
 }
