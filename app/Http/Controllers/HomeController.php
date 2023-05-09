@@ -39,7 +39,7 @@ class HomeController extends Controller
             'file' => 'required|image|mimes:png,jpg,jpeg,svg|max:2048'
         ]);
 
-        $imageName = microtime().'.'.$request->file->extension();
+        $imageName = \Str::random(40).'.'.$request->file->extension();
 
         // Public Folder
         $request->file->move(public_path('images'), $imageName);
