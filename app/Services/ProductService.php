@@ -76,10 +76,21 @@ class ProductService
         }
 
         if (isset($filters['variant']) && $filters['variant']) {
-            $query->where(function ($query) use ($filters) {
-                $query->where('PVP.color', 'LIKE', "%{$filters['variant']}%");
-                $query->orWhere('PVP.size', 'LIKE', "%{$filters['variant']}%");
-                $query->orWhere('PVP.style', 'LIKE', "%{$filters['variant']}%");
+            $variants = [];
+            foreach ($filters['variant'] as $variant){
+                $temp = explode('-', $variant, 2);
+                $variants[$temp[0]][] = $temp[1] ?? '';
+            }
+            $query->where(function ($query) use ($variants) {
+                if(isset($variants[1])){
+                    $query->whereIn('PVP.color', $variants[1]);
+                }
+                if(isset($variants[2])){
+                    $query->whereIn('PVP.size', $variants[2]);
+                }
+                if(isset($variants[6])){
+                    $query->whereIn('PVP.style', $variants[6]);
+                }
             });
         }
 
