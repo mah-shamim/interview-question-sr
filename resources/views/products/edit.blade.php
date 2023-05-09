@@ -56,19 +56,6 @@
                                 <div class="dz-default dz-message"><span>Drop files here to upload</span></div>
                             </div>
                         </div>
-                        {{--@dd($product->productImages)--}}
-                        @if($product->productImages)
-                            {{--@foreach($product->productImages as $key=>$productImage)
-                                <input type="text" class="form-control" value="{{$productImage->file_path}}" name="imageUpload[{{$key}}]" required>
-                                <input type="text" class="form-control" value="{{public_path('images')}}" name="imagePath[{{$key}}]" required>
-                                @push('page_js')
-                                    <script>
-                                        myDropzone.addFile('{{public_path('images')}}/{{$productImage->file_path}}')
-                                    </script>
-                                @endpush
-                            @endforeach--}}
-
-                        @endif
                         <div class="media-section"></div>
                     </div>
                 </div>
