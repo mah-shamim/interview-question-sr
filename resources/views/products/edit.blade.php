@@ -181,7 +181,7 @@
     @php
         $thumbnails = [];
         foreach ($product->productImages as $productImage){
-            if(file_exists(public_path('images/'.$productImage->file_path)){
+            if(file_exists(public_path('images/'.$productImage->file_path))){
                 $thumbnails[] = [
                    'name' => $productImage->file_path,
                     'size' => filesize(public_path('images/'.$productImage->file_path)),
