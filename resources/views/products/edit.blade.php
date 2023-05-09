@@ -181,14 +181,16 @@
     @php
         $thumbnails = [];
         foreach ($product->productImages as $productImage){
-            $thumbnails[] = [
-               'name' => $productImage->file_path,
-                'size' => filesize(public_path('images/'.$productImage->file_path)),
-                'type' => mime_content_type(public_path('images/'.$productImage->file_path)),
-                'status' => 'added',
-                'url' => asset('images/'.$productImage->file_path),
-                'accepted' => true
-            ];
+            if(file_exists(public_path('images/'.$productImage->file_path)){
+                $thumbnails[] = [
+                   'name' => $productImage->file_path,
+                    'size' => filesize(public_path('images/'.$productImage->file_path)),
+                    'type' => mime_content_type(public_path('images/'.$productImage->file_path)),
+                    'status' => 'added',
+                    'url' => asset('images/'.$productImage->file_path),
+                    'accepted' => true
+                ];
+            }
         }
     @endphp
     <script>
