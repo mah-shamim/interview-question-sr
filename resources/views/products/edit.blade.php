@@ -184,7 +184,6 @@
         fileUploadURL="{{ route('file-upload') }}";
         fileDeleteURL="{{ route('file-delete') }}";
         thumbnails = {!! json_encode($thumbnails) !!};
-        console.log(thumbnails)
     </script>
     <script type="text/javascript" src="{{ asset('js/product.js') }}"></script>
 @endpush
