@@ -159,6 +159,7 @@
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 <script src="{{ asset('js/app.js') }}" defer></script>
 <script>Dropzone.autoDiscover = false;</script>
+
 @stack('page_js')
 </body>
 </html>

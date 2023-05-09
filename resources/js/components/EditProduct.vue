@@ -121,17 +121,12 @@ export default {
     },
     data() {
         console.log(this.productinfo);
-        return {
-            product_name: '',
-            product_sku: '',
-            description: '',
-            images: [],
-            product_variant: [
-                {
-                    option: this.variants[0].id,
-                    tags: []
-                }
-            ],
+        let product = {
+            product_name: this.productinfo.title,
+            product_sku: this.productinfo.sku,
+            description: this.productinfo.description,
+            images: (this.productinfo.product_images.length > 0) ? this.productinfo.product_images : [],
+            product_variant: [],
             product_variant_prices: [],
             dropzoneOptions: {
                 url: 'https://httpbin.org/post',
@@ -139,7 +134,49 @@ export default {
                 maxFilesize: 0.5,
                 headers: {"My-Awesome-Header": "header value"}
             }
+        };
+
+        for (let product_variant of this.variants) {
+            product.product_variant.push(
+                {
+                    option: product_variant.id,
+                    tags: this.productinfo.product_variants.map((prodduct_variant_type) => {
+                        if (prodduct_variant_type.variant_id === product_variant.id) {
+                            return prodduct_variant_type.variant;
+                        }
+                    }).filter(element => {
+                        return element !== undefined;
+                    })
+                }
+            )
         }
+
+        for (let product_variant_price of this.productinfo.product_variant_prices) {
+
+            let product_variant_title = '';
+
+            if (product_variant_price.variant_one.variant) {
+                product_variant_title += (product_variant_price.variant_one.variant + "/");
+            }
+
+            if (product_variant_price.variant_two.variant) {
+                product_variant_title += (product_variant_price.variant_two.variant + "/");
+            }
+
+            if (product_variant_price.variant_three.variant) {
+                product_variant_title += (product_variant_price.variant_three.variant + "/");
+            }
+
+            product.product_variant_prices.push(
+                {
+                    title: product_variant_title,
+                    price: product_variant_price.price,
+                    stock: product_variant_price.stock,
+                }
+            )
+        }
+
+        return product;
     },
     methods: {
         // it will push a new object into product variant
@@ -189,6 +226,7 @@ export default {
         saveProduct() {
 
             let product = {
+                id : this.productinfo.id,
                 title: this.product_name,
                 sku: this.product_sku,
                 description: this.description,
@@ -196,9 +234,8 @@ export default {
                 product_variant: this.product_variant,
                 product_variant_prices: this.product_variant_prices
             }
-            console.log(product)
 
-            axios.post('/product', product).then(response => {
+            axios.patch('/product/' + this.productinfo.id, product).then(response => {
                 console.log(response.data);
             }).catch(error => {
                 alert("Some Error Occurred");

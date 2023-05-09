@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,5 +25,30 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    // Store Image
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function storeImage(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:png,jpg,jpeg,svg|max:2048'
+        ]);
+
+        $imageName = time().'.'.$request->file->extension();
+
+        // Public Folder
+        $request->file->move(public_path('images'), $imageName);
+
+        return response()->json(['name'=>$imageName, 'imagePath'=>public_path('images')]);
+    }
+
+    public function deleteImage(Request $request)
+    {
+        unlink(public_path('images')."/".$request->file_to_be_deleted);
     }
 }
