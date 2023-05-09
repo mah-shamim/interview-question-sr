@@ -14,13 +14,13 @@
                     <input type="text" name="title" placeholder="Product Title" class="form-control" value="{{request('title')}}">
                 </div>
                 <div class="col-md-2">
-                    <select name="variant" id="" class="form-control">
+                    <select name="variant[]" id="" class="form-control" multiple>
                         <option value="">-- Select Variant --</option>
                         @foreach($variants as $variant)
                             <optgroup label="{{$variant->title}}">
                                 @foreach($variant->productVariants as $productVariant)
-                                    <option value="{{$productVariant->variant}}"
-                                            @if($productVariant->variant == request('variant')) selected @endif
+                                    <option value="{{$variant->id}}-{{$productVariant->variant}}"
+                                            @if(in_array($variant->id.'-'.$productVariant->variant, request('variant', []))) selected @endif
                                     >{{$productVariant->variant}}</option>
                                 @endforeach
                             </optgroup>
