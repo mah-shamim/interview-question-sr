@@ -205,6 +205,6 @@ function loadImage()
 {
     $(".media-section").empty();
     thumbnails.forEach(function(value){
-        $(".media-section").append(`<input type="text" class="form-control" value="${value.name}" name="imageUpload[]">`);
+        $(".media-section").append(`<input type="hidden" class="form-control" value="${value.name}" name="imageUpload[]">`);
     })
 }
